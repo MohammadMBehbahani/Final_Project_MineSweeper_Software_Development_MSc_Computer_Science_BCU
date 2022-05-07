@@ -48,6 +48,12 @@ class preparation:
 
         self.mw.config(menu=menubar)
 
+    def setSize(self, rows, cols, mines):
+        
+        self.row = rows
+        self.col = cols
+        self.mines = mines
+        self.restartGame()
 
     def setGame_Over(self, value):
         self.game_over = value
@@ -72,9 +78,16 @@ class preparation:
     def saveConfig(self):
        if self.game_over == False:
             file = open("Minesweeper.txt", "w")
+            
             file.write(f"row: {str(self.row)} \n")
             file.write(f"cols: {str(self.col)} \n")
             file.write(f"mines: {str(self.mines)} \n")
+
+            mine_count = self.lbl_minescount.get()
+            spacecount = self.lbl_spacecount.get()
+
+            file.write(f"mine_count: {str(mine_count)} \n")
+            file.write(f"spacecount: {str(spacecount)} \n")
             
             for x in range(0, self.row):
                 for y in range(0, self.col):
@@ -97,6 +110,10 @@ class preparation:
             row = int(file.readline().split(":")[1])
             cols = int(file.readline().split(":")[1])
             mines = int(file.readline().split(":")[1])
+
+            mine_count = int(file.readline().split(":")[1])
+            spacecount = int(file.readline().split(":")[1])
+
             boards = []
             
             boardLine = file.readline()
@@ -113,7 +130,6 @@ class preparation:
                 boards.append(contex)
                 boardLine = file.readline()
                 
-
             buttons = []
 
             buttonline = file.readline()
@@ -146,10 +162,16 @@ class preparation:
                 if value == 0:
                     self.buttons[x][y]['state'] = 'disabled'
                     self.buttons[x][y].config(relief=tkinter.SUNKEN)
+                elif "!" in str(value):
+                    self.buttons[x][y]["text"] = value
+                    self.buttons[x][y]['state'] = 'disabled'
                 else:
                     self.buttons[x][y]["text"] = value
                     self.buttons[x][y]['state'] = 'disabled'
                     self.buttons[x][y].config(relief=tkinter.SUNKEN)
+
+            self.lbl_minescount.set(str(mine_count))
+            self.lbl_spacecount.set(str(spacecount))
 
             file.close()
         return
@@ -224,7 +246,7 @@ class preparation:
     def rightClick(self,x, y):
         if self.game_over:
             return
-        if self.buttons[x][y]["text"] == "!":
+        if "!" in self.buttons[x][y]["text"]:
             self.buttons[x][y]["text"] = " "
             self.buttons[x][y]["state"] = "normal"
             self.increase_lbl_minescount()
