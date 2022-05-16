@@ -174,7 +174,8 @@ class preparation:
             self.lbl_spacecount.set(str(spacecount))
 
             file.close()
-        return
+        else:
+            tkinter.messagebox.showwarning("Info", "File Minesweeper.txt does not exist")
 
     def reduce_lbl_minescount(self):
         self.minescount = self.minescount - 1

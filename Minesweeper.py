@@ -24,9 +24,20 @@ def set_size():
     s = SetSizeGUI.Select_Level_GUI()
     row_s, col_s, mine_s = s.get_sizes()
 
-    row_s = int(row_s)
-    col_s = int(col_s)
-    mine_s = int(mine_s)
+    if row_s == '':
+        row_s = 10
+    if col_s == '':
+        col_s = 10
+    if mine_s == '':
+        mine_s = 10
+
+    try:
+        row_s = int(row_s)
+        col_s = int(col_s)
+        mine_s = int(mine_s)
+    except:
+        tkinter.messagebox.showwarning("Value Error", "Invalid value hase been enter, Please enter a valid number")
+        
     
     return row_s, col_s, mine_s
 
